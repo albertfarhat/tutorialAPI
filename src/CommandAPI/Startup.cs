@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Npgsql;
 
 namespace CommandAPI
 {
@@ -27,9 +28,15 @@ namespace CommandAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            services.AddDbContext<CommandContext>(opt => opt.UseNpgsql
-                (Configuration.GetConnectionString("PostgreSqlConnection")));
+            var builder = new NpgsqlConnectionStringBuilder();
+            builder.ConnectionString =
+            Configuration.GetConnectionString("PostgreSqlConnection");
+            builder.Username = Configuration["UserID"];
+            builder.Password = Configuration["Password"];
+            services.AddDbContext<CommandContext>
+                (opt => opt.UseNpgsql(builder.ConnectionString));
+
+            services.AddControllers();         
             services.AddScoped<ICommandAPIRepo, SqlCommandAPIRepo>();
         }
 
