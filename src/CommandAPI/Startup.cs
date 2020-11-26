@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Serialization;
 using Npgsql;
 
 namespace CommandAPI
@@ -29,15 +30,22 @@ namespace CommandAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var builder = new NpgsqlConnectionStringBuilder();
-            builder.ConnectionString =
-            Configuration.GetConnectionString("PostgreSqlConnection");
-            builder.Username = Configuration["UserID"];
-            builder.Password = Configuration["Password"];
+            var builder = new NpgsqlConnectionStringBuilder
+            {
+                ConnectionString =
+                Configuration.GetConnectionString("PostgreSqlConnection"),
+                Username = Configuration["UserID"],
+                Password = Configuration["Password"]
+            };
+         
             services.AddDbContext<CommandContext>
                 (opt => opt.UseNpgsql(builder.ConnectionString));
 
-            services.AddControllers();         
+            services.AddControllers().AddNewtonsoftJson(s =>
+            {
+                s.SerializerSettings.ContractResolver = new
+                CamelCasePropertyNamesContractResolver();
+            });
             services.AddScoped<ICommandAPIRepo, SqlCommandAPIRepo>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }

@@ -12,7 +12,10 @@ namespace CommandAPI
     {
         public CommandsProfile()
         {
+            CreateMap<CommandUpdateDto, Command>();
+            CreateMap<CommandCreateDto, Command>();
             CreateMap<Command, CommandReadDto>();
+            CreateMap<Command, CommandUpdateDto>();
         }
     }
 }
