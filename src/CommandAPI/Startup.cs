@@ -54,6 +54,7 @@ namespace CommandAPI
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
             CommandContext context)
         {
+            //added db migration
             context.Database.Migrate();
             if (env.IsDevelopment())
             {
