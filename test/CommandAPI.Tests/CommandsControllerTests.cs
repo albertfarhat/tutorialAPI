@@ -40,7 +40,7 @@ namespace CommandAPI.Tests
             //Arrange
             mockRepo.Setup(repo =>
             repo.GetAllCommands()).Returns(GetCommands(0));
-            var controller = new CommandsController(mockRepo.Object, mapper);
+            var controller = new CommandsController(null,mockRepo.Object, mapper);
             //Act
             var result = controller.GetAllCommands();
             //Assert
@@ -53,7 +53,7 @@ namespace CommandAPI.Tests
             //Arrange
             mockRepo.Setup(repo =>
             repo.GetAllCommands()).Returns(GetCommands(1));
-            var controller = new CommandsController(mockRepo.Object, mapper);
+            var controller = new CommandsController(null, mockRepo.Object, mapper);
             //Act
             var result = controller.GetAllCommands();
             //Assert
@@ -65,7 +65,7 @@ namespace CommandAPI.Tests
             //Arrange
             mockRepo.Setup(repo =>
             repo.GetAllCommands()).Returns(GetCommands(1));
-            var controller = new CommandsController(mockRepo.Object, mapper);
+            var controller = new CommandsController(null, mockRepo.Object, mapper);
             //Act
             var result = controller.GetAllCommands();
             //Assert
@@ -78,7 +78,7 @@ namespace CommandAPI.Tests
             //Arrange
             mockRepo.Setup(repo =>
             repo.GetCommandById(0)).Returns(() => null);
-            var controller = new CommandsController(mockRepo.Object, mapper);
+            var controller = new CommandsController(null, mockRepo.Object, mapper);
             //Act
             var result = controller.GetCommandById(1);
             //Assert
@@ -97,7 +97,7 @@ namespace CommandAPI.Tests
                 Platform = "Mock",
                 CommandLine = "Mock"
             });
-            var controller = new CommandsController(mockRepo.Object, mapper);
+            var controller = new CommandsController(null, mockRepo.Object, mapper);
             //Act
             var result = controller.GetCommandById(1);
             //Assert
