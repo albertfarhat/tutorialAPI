@@ -33,3 +33,4 @@ msbuild.wrn
 *.exe
 *.o
 *.so
+/src/CommandAPI/internal_logs

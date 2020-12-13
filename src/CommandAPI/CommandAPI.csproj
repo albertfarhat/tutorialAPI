@@ -23,5 +23,9 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\LoggerService\LoggerService.csproj" />
+  </ItemGroup>
+
 
 </Project>

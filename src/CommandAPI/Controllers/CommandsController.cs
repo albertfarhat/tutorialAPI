@@ -6,6 +6,7 @@ using AutoMapper;
 using CommandAPI.Data;
 using CommandAPI.Dtos;
 using CommandAPI.Models;
+using LoggerService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
@@ -21,11 +22,15 @@ namespace CommandAPI.Controllers
         //comments
         private readonly ICommandAPIRepo _commandAPIRepo;
         private readonly IMapper _mapper;
+        private readonly ILoggerManager _logger;
 
-        public CommandsController(ICommandAPIRepo commandAPIRepo, IMapper mapper)
+        public CommandsController(ILoggerManager logger, 
+            ICommandAPIRepo commandAPIRepo,
+            IMapper mapper)
         {
             _commandAPIRepo = commandAPIRepo;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -41,6 +46,7 @@ namespace CommandAPI.Controllers
             var commandItem = _commandAPIRepo.GetCommandById(id);
             if (commandItem == null)
             {
+                _logger?.LogWarn("command not found");
                 return NotFound();
             }
             return Ok(_mapper.Map<CommandReadDto>(commandItem));
@@ -66,6 +72,7 @@ namespace CommandAPI.Controllers
             var commandModelFromRepo = _commandAPIRepo.GetCommandById(id);
             if (commandModelFromRepo == null)
             {
+                _logger?.LogWarn("command not found");
                 return NotFound();
             }
             _mapper.Map(cmd, commandModelFromRepo);
@@ -82,6 +89,7 @@ namespace CommandAPI.Controllers
             var commandModelFromRepo = _commandAPIRepo.GetCommandById(id);
             if (commandModelFromRepo == null)
             {
+                _logger?.LogWarn("command not found");
                 return NotFound();
             }
             var commandToPatch = _mapper.Map<CommandUpdateDto>(commandModelFromRepo);
@@ -103,6 +111,7 @@ namespace CommandAPI.Controllers
             var commandModelFromRepo = _commandAPIRepo.GetCommandById(id);
             if (commandModelFromRepo == null)
             {
+                _logger?.LogWarn("command not found");
                 return NotFound();
             }
 
